@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Material list {% endblock %}
+
+{% block content %}
+    <h1>My Materials</h1>
+    {% for material in materials %}
+        <h2>{{ materials.title }}</h2>
+        <p>
+            {{ material.body|truncatewords:5|linebreaks }}
+        </p>
+        Author {{ material.author }}<br>
+    {% endfor %}
+
+{% endblock %}
