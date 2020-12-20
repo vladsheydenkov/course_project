@@ -3,6 +3,7 @@ from . import models
 # Register your models here.
 
 # admin.site.register(models.Material)
+admin.site.register(models.Comment)
 
 
 @admin.register(models.Material)

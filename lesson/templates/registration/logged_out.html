@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %} Logged out {% endblock %}
+
+{% block content %}
+    <h1>Logout</h1>
+    you've been logged out ypu can login again:<br>
+    <a href="{% url "lesson:login" %}">login</a>
+
+{#    {% if form.errors %}#}
+{#            Bad credentials#}
+{#    {% endif %}#}
+{#    <form action="." method="post">#}
+{#        {{ form.as_p }}#}
+{#        {% csrf_token %}#}
+{#        <input type="hidden" name="next" value="{{ next }}">#}
+{#        <input type="submit" value=login">#}
+{#    </form>#}
+{#        <a href="{% url "lesson:all_materials" %}">All materials</a>#}
+{% endblock %}

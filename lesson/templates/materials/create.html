@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %} Create material {% endblock %}
+
+{% block content %}
+    {% if created %}
+        {{ material.title }} has been created.</br>
+        <a href="{% url "lesson:all_materials" %}">All materials</a></br>
+        <a href="{{ material.get_absolute_url }}">view details</a>
+    {% else %}
+        <h1>Create new material</h1>
+        <form action="." method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <input type="submit" value="Create material!!!">
+        </form>
+    {% endif %}
+{% endblock %}

@@ -5,11 +5,12 @@
 {% block content %}
     <h1>My Materials</h1>
     {% for material in materials %}
-        <h2>{{ materials.title }}</h2>
+        <h2>{{ material.title }}</h2>
         <p>
             {{ material.body|truncatewords:5|linebreaks }}
         </p>
-        Author {{ material.author }}<br>
+        <a href="{{ material.get_absolute_url }}">link</a>
+         Author {{ material.author }}<br>
     {% endfor %}
-
+    <a href="{% url 'lesson:create_form' %}">Create new material</a>
 {% endblock %}
