@@ -3,11 +3,17 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-
+from django.conf import  settings
 # Create your models here.
 
 
+class TheoryManager(models.Manager):
+    def get_queryset(self):
+        return super(TheoryManager, self).get_queryset().filter(material_type='theory')
+
+
 class Material(models.Model):
+
     MATERIAL_TYPE = [
         ('theory', 'Theoretical material'),
         ('practice', 'Practical'),
@@ -32,7 +38,8 @@ class Material(models.Model):
         choices=MATERIAL_TYPE,
         default='theory',
     )
-
+    objects = models.Manager()
+    theory = TheoryManager()
     # def __str__(self):
     #     return self.title
 
@@ -52,3 +59,13 @@ class Comment(models.Model):
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     email = models.EmailField()
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE)
+    birth = models.DateTimeField(blank=True, null=True)
+    photo = models.ImageField(upload_to="user/%Y/%m/%d", blank=True)
+
+    def __str__(self):
+        return "{username} profile".format(username=self.user.username)

@@ -7,10 +7,23 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from . import models
 from . import forms
 
 # Create your views here.
+
+TEMPLATE = ("{title} at {uri} \n\n {name} asks you to review"
+            "Comment:\n\n {comment}")
+
+
+class MaterialListView(LoginRequiredMixin, ListView):
+    queryset = models.Material.objects.all()
+    context_object_name = 'materials'
+    template_name = 'materials/all_materials.html'
 
 
 @login_required
@@ -60,8 +73,7 @@ def share_material(request, material_id):
                 material.title,
             )
 
-            body = ("{title} at {uri} \n\n {name} asks you to review"
-                    "Comment:\n\n {comment}").format(
+            body = TEMPLATE.format(
                 title=material.title,
                 uri=material_uri,
                 name=cd['name'],
@@ -123,3 +135,8 @@ def user_login(request):
         return render(request,
                       'login.html',
                       {'form': form})
+
+
+@login_required
+def view_profile(request):
+    return render(request, 'profile.html', {'user': request.user})

@@ -9,11 +9,11 @@
 <body>
 {% if request.user.is_authenticated %}
     Hi {{ request.user.username }}
-     <a href="{% url "lesson:logout" %}">logout</a>
+    <a href="{% url "lesson:logout" %}">logout</a>
+    <a href="{% url "lesson:profile" %}">Profile</a>
 {% else %}
-    <a href="{% url "lesson:login" %}">login</a>
+     <a href="{% url "lesson:login" %}">login</a>
 {% endif %}
-
 {% block content %}
 {% endblock %}
 </body>

@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from lesson import models
+from lesson import models, views
 
 # Create your tests here.
 
@@ -97,5 +97,25 @@ class MaterialTestcase(TestCase):
                 'to_email': 'test@mail.com',
                 'comment': 'comment'},
         )
-        # self.assertEqual(mail_mock.call_args_list[0][0][2], )
+
+        # response = self.client.post(
+        #     '/'+str(material.id)+'/share/',
+        #     {'name': 'test_name',
+        #         'to_email': 'test@mail.com',
+        #         'comment': 'comment'},
+        # )
+        expected_body = views.TEMPLATE.format(
+            title='',
+            uri='http://testserver/2021/1/5/slug/',
+            name='test_name',
+            comment='comment',
+        )
+        mail_mock.assert_called_with('test_name asks you to review: ',
+                                     expected_body,
+                                     'supersiteadmin@mysote.com',
+                                     ['test@mail.com'])
+
+        # self.assertEqual(mail_mock.call_args_list[0][0][1], expected_body)
         mail_mock.assert_called_once()
+
+
