@@ -140,3 +140,41 @@ def user_login(request):
 @login_required
 def view_profile(request):
     return render(request, 'profile.html', {'user': request.user})
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = forms.UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save(commit=False)
+            new_user.set_password(
+                user_form.cleaned_data['password']
+            )
+            new_user.save()
+            models.Profile.objects.create(user=new_user,
+                                          photo='unknown.jpeg')
+            return render(request, 'complete_registration.html',
+                          {'new_user': new_user})
+    else:
+        user_form = forms.UserRegistrationForm()
+    return render(request, 'register.html', {'form': user_form})
+
+@login_required
+def edit_profile(request):
+    if request.method == "POST":
+        user_form = forms.UserEditForm(instance=request.user,
+                                       data= request.POST)
+        profile_form = forms.ProfileEditForm(instance=request.user.profile,
+                                             data=request.POST,
+                                             files=request.FILES)
+        user_form.save()
+        profile_form.save()
+        return render(request, 'profile.html', {'user': request.user})
+
+    user_form = forms.UserEditForm(instance=request.user)
+    profile_form = forms.ProfileEditForm(instance=request.user.profile)
+    return render(request,
+                  'edit.html',
+                  {'profile_form': profile_form,
+                  'user_form': user_form})
+
