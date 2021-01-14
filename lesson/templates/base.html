@@ -1,4 +1,8 @@
+{% load bootstrap4 %}
 {% load static %}
+{% bootstrap_css %}
+{%  bootstrap_javascript %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,15 +11,45 @@
     <link href="{% static "style.css"%}" rel="stylesheet">
 </head>
 <body>
-{% if request.user.is_authenticated %}
-    Hi {{ request.user.username }}
-    <a href="{% url "lesson:logout" %}">logout</a>
-    <a href="{% url "lesson:profile" %}">Profile</a>
-{% else %}
-     <a href="{% url "lesson:login" %}">login</a>
-     <a href="{% url "lesson:register" %}">register</a>
-{% endif %}
-{% block content %}
-{% endblock %}
+
+<header class="border border-primary rounded">
+    {% if request.user.is_authenticated %}
+        Hi {{ request.user.username }}
+        <a href="{% url "lesson:logout" %}">logout</a>
+        <a href="{% url "lesson:profile" %}">Profile</a>
+    {% else %}
+        <a href="{% url "lesson:login" %}">login</a>
+        <a href="{% url "lesson:register" %}">register</a>
+    {% endif %}
+</header>
+<div class="container-flex">
+    <div class="row mb-1 mt-1">
+        <div class="col-sm-9 pr-sm-1 pl-sm-0">
+        <div class=" p-3 border border-primary rounded">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        </div>
+        <div class="col-sm-3 border border-primary rounded">
+            <a href="{% url "lesson:all_materials" %}">All materials</a>
+            {% block menu %}
+            {% endblock %}
+        </div>
+
+    </div>
+
+    <div class="row border border-primary rounded">
+        <div class="col-sm-9 pl-4">
+            IT Academy Python Web Development
+        </div>
+        <div class="col-sm-3">
+            Vlad
+        </div>
+    </div>
+
+
+</div>
+
 </body>
 </html>
